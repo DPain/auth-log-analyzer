@@ -24,3 +24,7 @@ yarn-error.log*
 .settings/
 .project
 .editorconfig
+
+# Firebase
+.firebase/
+.firebaserc

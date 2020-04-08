@@ -1,14 +1,19 @@
-# codemix-vanilla-vue
+# auth-log-analyzer
 
-Template for project creation of Vue inside CodeMix
+Analyzes `Auth.log` files for you!
 
-# Contents
+## Prerequisites
+These are the folloing dependencies:
+- NodeJS ^8.9
+- npm ^5.6
 
+## Contents
 This template project is just an example Hello World that guide you through the use of Vue to build a very simple web application that display the Hello World!!! Greeting.
 
-This example has been started with the vue-cli and webpack-simple
+This project has been created using `vue-cli` and `webpack-simple`
 
-# Project setup
+## Project setup
+* Install necessary dependencies using npm.
 ```
 npm install
 ```
@@ -32,3 +37,14 @@ npm run test
 ```
 npm run lint
 ```
+
+### Deploy to Firebase
+* You need to first Compile the app for production and only after then you can deploy to Firebase.  
+This web app only needs Firebase to host.
+```
+npm run build
+firebase deploy --only hosting
+```
+
+## Host Vue.js apps in Firebase
+To learn how to host Vue.js apps in Firebase, click [here](https://cli.vuejs.org/guide/deployment.html#firebase)!
