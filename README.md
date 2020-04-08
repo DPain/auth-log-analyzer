@@ -6,6 +6,12 @@ Analyzes `Auth.log` files for you!
 These are the folloing dependencies:
 - NodeJS ^8.9
 - npm ^5.6
+- vue ^2.5.17
+- vue-router ^3.1.6
+- vuetify ^2.2.11
+
+The following are devDependencies and are not required:
+- @vue/cli ^4.3.1
 
 ## Contents
 This template project is just an example Hello World that guide you through the use of Vue to build a very simple web application that display the Hello World!!! Greeting.
