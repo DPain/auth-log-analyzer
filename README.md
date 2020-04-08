@@ -10,10 +10,10 @@ These are the folloing dependencies:
 ## Contents
 This template project is just an example Hello World that guide you through the use of Vue to build a very simple web application that display the Hello World!!! Greeting.
 
-This project has been created using `vue-cli` and `webpack-simple`
+This project has been created using `vue-cli`, `webpack-simple`, `firebase-tools`
 
 ## Project setup
-* Install necessary dependencies using npm.
+Install necessary dependencies using npm.
 ```
 npm install
 ```
@@ -39,7 +39,7 @@ npm run lint
 ```
 
 ### Deploy to Firebase
-* You need to first Compile the app for production and only after then you can deploy to Firebase.  
+You need to first Compile the app for production and only after then you can deploy to Firebase.  
 This web app only needs Firebase to host.
 ```
 npm run build
