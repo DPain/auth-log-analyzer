@@ -19,10 +19,6 @@ const router = new Router({
       component: () => import('@/views/Display')
     },
     {
-      path: '/about',
-      component: () => import('@/views/About')
-    },
-    {
       path: '*',
       component: () => import('@/views/Index')
     }
