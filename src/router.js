@@ -8,25 +8,25 @@ const router = new Router({
   routes: [
     {
       path: '/',
+      name: 'index',
       component: () => import('@/views/Index')
     },
     {
       path: '/load',
+      name: 'load',
       component: () => import('@/views/Load')
     },
     {
       path: '/display',
-      component: () => import('@/views/Display')
+      name: 'display',
+      component: () => import('@/views/Display'),
+      props: true
     },
     {
       path: '*',
       component: () => import('@/views/Index')
     }
   ]
-})
-
-router.beforeEach((to, from, next) => {
-  next()
 })
 
 export default router;

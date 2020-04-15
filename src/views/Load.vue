@@ -1,5 +1,5 @@
 <template>
-  <div id="load">
+  <div class="load">
     <v-container>
       <!-- Each card takes in a full row. -->
       <v-row>
@@ -15,7 +15,7 @@
                 <v-card-text class="pb-0">Please load the file you want to analyze.</v-card-text>
                 <v-card-subtitle class="pt-0">Don't worry! Your data is not sent anywhere.</v-card-subtitle>
                 <v-card-actions class="justify-center">
-                  <v-btn large outlined>Load</v-btn>
+                  <v-btn large outlined :to="{name:'display', params: { stats: temp }}">Load</v-btn>
                 </v-card-actions>
               </v-col>
             </v-row>
@@ -29,9 +29,13 @@
 <script>
 export default {
   name: "Load",
-  props: {
-    msg: String
-  }
+
+  data: () => ({
+    temp: {
+      hello: "world",
+      world: "jelly"
+    }
+  })
 };
 </script>
 
