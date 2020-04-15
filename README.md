@@ -10,11 +10,11 @@ These are the folloing dependencies:
 - vue-router ^3.1.6
 - vuetify ^2.2.11
 
-The following are devDependencies and are not required:
+The following are devDependencies and are optional:
 - @vue/cli ^4.3.1
 
 ## Contents
-This template project is just an example Hello World that guide you through the use of Vue to build a very simple web application that display the Hello World!!! Greeting.
+This is a Vue.js web app hosted on Google Firebase that reads auth.log files from the user to extract and display various data from it. 
 
 This project has been created using `vue-cli`, `webpack-simple`, `firebase-tools`
 
@@ -45,7 +45,7 @@ npm run lint
 ```
 
 ### Deploy to Firebase
-You need to first Compile the app for production and only after then you can deploy to Firebase.  
+You need to compile the app for a production environment first and only after can you then deploy it to Firebase.  
 This web app only needs Firebase to host.
 ```
 npm run build

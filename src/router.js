@@ -11,8 +11,8 @@ const router = new Router({
       component: () => import('@/views/Index')
     },
     {
-      path: '/upload',
-      component: () => import('@/views/Upload')
+      path: '/load',
+      component: () => import('@/views/Load')
     },
     {
       path: '/display',

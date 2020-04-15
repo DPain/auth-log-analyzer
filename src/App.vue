@@ -19,12 +19,12 @@
       <v-app-bar app clipped-left>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         <router-link tag="span" class="link" to="/">
-          <v-toolbar-title v-text="title" to="/"></v-toolbar-title>
+          <v-toolbar-title class="no-select" v-text="title" to="/"></v-toolbar-title>
         </router-link>
         <v-spacer></v-spacer>
-        <router-link class="link" :to="uploadUrl">
+        <router-link class="link" :to="loadUrl">
           <v-btn icon>
-            <v-icon>mdi-upload</v-icon>
+            <v-icon>mdi-file-plus</v-icon>
           </v-btn>
         </router-link>
       </v-app-bar>
@@ -42,13 +42,8 @@
 </template>
 
 <script>
-import Index from "@/views/Index";
-
 export default {
   name: "App",
-  components: {
-    Index
-  },
   data() {
     return {
       links: [
@@ -59,10 +54,10 @@ export default {
           link: "/"
         },
         {
-          id: "upload",
-          icon: "mdi-upload",
-          text: "Upload",
-          link: "/upload"
+          id: "load",
+          icon: "mdi-file-plus",
+          text: "Load",
+          link: "/load"
         }
       ],
       drawer: false,
@@ -71,16 +66,8 @@ export default {
     };
   },
   computed: {
-    uploadUrl() {
-      return this.links.find(el => el["id"] == "upload").link;
-    }
-  },
-  methods: {
-    doStuff(e) {
-      console.log("TEST");
-      // target is actually btn__content so we need to go one step higher
-      e.path[1].deactive;
-      e.path[1].blur();
+    loadUrl() {
+      return this.links.find(el => el["id"] == "load").link;
     }
   },
   created() {
@@ -96,6 +83,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+// Prevents links from having default color
 .link {
   text-decoration: none;
   color: white;
@@ -106,5 +94,12 @@ export default {
 .v-navigation-drawer--temporary.v-navigation-drawer--clipped {
   z-index: 5;
   padding-top: 64px;
+}
+</style>
+
+<style lang="scss" scoped>
+// Prevents App name from being selected.
+.no-select {
+  user-select: none;
 }
 </style>
