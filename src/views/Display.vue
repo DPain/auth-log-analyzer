@@ -27,7 +27,18 @@ export default {
   created: function() {
     // Redirects back to loading page if data is not present.
     if (!this.stats) {
-      this.$router.push({name: "load"});
+      this.$router.replace({ name: "load" });
+    } else {
+      this.analyze(this.stats);
+    }
+  },
+
+  methods: {
+    analyze: function(stats) {
+      alert("Analyzing Stats now!");
+
+      // eslint-disable-next-line
+      console.log(stats);
     }
   }
 };

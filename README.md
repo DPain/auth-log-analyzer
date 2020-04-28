@@ -4,8 +4,8 @@ Analyzes `Auth.log` files for you!
 
 ## Prerequisites
 These are the folloing dependencies:
-- NodeJS ^8.9
-- npm ^5.6
+- NodeJS ^12.16.2
+- npm ^6.14.4
 - vue ^2.5.17
 - vue-router ^3.1.6
 - vuetify ^2.2.11

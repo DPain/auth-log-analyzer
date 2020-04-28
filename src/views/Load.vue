@@ -1,5 +1,6 @@
 <template>
   <div class="load">
+    <input type="file" ref="file" style="display: none" @change="load()" multiple="multiple" />
     <v-container>
       <!-- Each card takes in a full row. -->
       <v-row>
@@ -15,7 +16,7 @@
                 <v-card-text class="pb-0">Please load the file you want to analyze.</v-card-text>
                 <v-card-subtitle class="pt-0">Don't worry! Your data is not sent anywhere.</v-card-subtitle>
                 <v-card-actions class="justify-center">
-                  <v-btn large outlined :to="{name:'display', params: { stats: temp }}">Load</v-btn>
+                  <v-btn large outlined @click="triggerInput()">Load</v-btn>
                 </v-card-actions>
               </v-col>
             </v-row>
@@ -35,7 +36,40 @@ export default {
       hello: "world",
       world: "jelly"
     }
-  })
+  }),
+
+  methods: {
+    triggerInput: function() {
+      this.$refs.file.click();
+    },
+    load: function() {
+      // eslint-disable-next-line
+      console.log(this.$refs.file.files);
+      if (this.$refs.file.files.length > 0) {
+        alert("Loading now!");
+        let dataList = Array();
+
+        let reader = new FileReader();
+        reader.onload = evt => {
+          let data = this.parse(evt.target.result);
+          dataList.push(data);
+        };
+        reader.onerror = evt => {
+          // eslint-disable-next-line
+          console.error(evt);
+        };
+
+        this.$refs.file.files.array.forEach(el => {
+          reader.readAsText(el, "UTF-8");
+        });
+        this.$router.replace({ name: "display", params: { stats: dataList } });
+      }
+    },
+    parse: function(text) {
+      // Parse the text file.
+      return "";
+    }
+  }
 };
 </script>
 
