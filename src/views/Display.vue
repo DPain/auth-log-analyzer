@@ -3,7 +3,7 @@
     <v-container>
       <div v-if="stats">
         <h1>Stats:</h1>
-        <p>[{{ printStats }}]</p>
+        <p>{{ printStats }}</p>
       </div>
     </v-container>
   </div>
@@ -13,7 +13,7 @@
 export default {
   name: "Display",
   props: {
-    stats: Object
+    stats: Array
   },
 
   computed: {
@@ -35,7 +35,7 @@ export default {
 
   methods: {
     analyze: function(stats) {
-      alert("Analyzing Stats now!");
+      //alert("Analyzing Stats now!");
 
       // eslint-disable-next-line
       console.log(stats);

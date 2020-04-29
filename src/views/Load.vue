@@ -46,28 +46,41 @@ export default {
       // eslint-disable-next-line
       console.log(this.$refs.file.files);
       if (this.$refs.file.files.length > 0) {
-        alert("Loading now!");
-        let dataList = Array();
+        let promises = [];
 
-        let reader = new FileReader();
-        reader.onload = evt => {
-          let data = this.parse(evt.target.result);
-          dataList.push(data);
-        };
-        reader.onerror = evt => {
-          // eslint-disable-next-line
-          console.error(evt);
-        };
-
-        this.$refs.file.files.array.forEach(el => {
-          reader.readAsText(el, "UTF-8");
+        // Creates Promises for each file, because the reading process is asynchronous.
+        Array.prototype.forEach.call(this.$refs.file.files, el => {
+          let filePromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsText(el, "UTF-8");
+            reader.onload = evt => {
+              resolve(this.parse(evt.target.result));
+            };
+          });
+          promises.push(filePromise);
         });
-        this.$router.replace({ name: "display", params: { stats: dataList } });
+
+        // Gathers all the values from the promises and then redirects to display page.
+        Promise.all(promises).then(dataList => {
+          // eslint-disable-next-line
+          console.log("dataList");
+          // eslint-disable-next-line
+          console.log(dataList);
+          this.$router.replace({
+            name: "display",
+            params: { stats: dataList }
+          });
+        });
       }
     },
     parse: function(text) {
+      // eslint-disable-next-line
+      console.log("Parsing!");
+      let i = 0;
+      for (i = 0; i < 90000; i++) {}
+
       // Parse the text file.
-      return "";
+      return "TEXT:" + i;
     }
   }
 };
