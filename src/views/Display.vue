@@ -3,7 +3,7 @@
     <v-container>
       <div v-if="stats">
         <h1>Stats:</h1>
-        <p>{{ printStats }}</p>
+        <p>{{ stats.length }}</p>
       </div>
     </v-container>
   </div>

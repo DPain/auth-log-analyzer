@@ -32,3 +32,7 @@ yarn-error.log*
 # Log files
 *.log
 *.xz
+*.1
+*.2
+*.3
+*.4
