@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import { Entry } from "@/objects/entry";
+import Entry from "@/objects/entry";
+import setCategoryData from "@/objects/category";
 
 export default {
   name: "Load",
@@ -78,57 +79,61 @@ export default {
       }
     },
     parse: function(text) {
+      let numIgnore = 0; // Number of ignored lines.
       let entries = Array();
       let lines = text.split("\n");
 
-      let delimiters = [" ", " ", ": ", ": ", "; ", " ", " ", " ", " ", " "];
+      // Handles the extra line the log might have.
+      if (lines[lines.length - 1] == "") {
+        lines.pop();
+      }
+
+      let delimiters = [" ", " ", ": ", ": "];
       // eslint-disable-next-line
       console.log("Parsing!");
 
       for (let i = 0; i < lines.length; i++) {
-        // Assuming default format to be format 1.
-        let format = 1;
         let line = lines[i];
 
-        let entry = new Entry();
+        if (line == "\n") {
+          // Checks if line is an empty line.
+          continue;
+        } else {
+          // Line is not empty.
+          let entry = new Entry();
 
-        for (let j = 0; j < delimiters.length; j++) {
-          let index = line.indexOf(delimiters[j]);
+          // Parses through each line with delimiters.
+          for (let j = 0; j < delimiters.length; j++) {
+            let index = line.indexOf(delimiters[j]);
 
-          if (index > 0) {
-            let info = line.substring(0, index);
-            this.fillEntry(entry, info, j);
+            if (index > 0) {
+              // Separator found.
+              let info = line.substring(0, index);
+              let leftover = line.substring(index);
+              this.fillEntry(entry, info, leftover, j);
 
-            line = line.substring(index + delimiters[j].length); // Skip the delimiter itself.
-          } else {
-            // Separator not found. 2nd format or unknown format.
+              line = line.substring(index + delimiters[j].length); // Skip the delimiter itself.
+            } else {
+              // Separator not found. Unknown format.
 
-            this.fillEntry(entry, line, j);
-            format = 2;
-            break;
+              numIgnore++;
+              break;
+            }
           }
-        }
 
-        if (format == 1) {
-          // Fill in rhost info.
-          this.fillEntry(entry, line, 10);
+          // Register entry.
+          entries.push(entry);
         }
-
-        // Register entry.
-        entries.push(entry);
       }
 
       // Parse the text file.
-      return entries;
+      return {
+        numIgnore: numIgnore,
+        entries: entries
+      };
     },
-    fillEntry: function(entry, info, index) {
+    fillEntry: function(entry, info, leftover, index) {
       // Works because Javascript passes objects by reference.
-
-      // There are 2 possible formats for a log.
-      /**
-       * Format 1 -> time host sshd[id] pam_event_type_desc; logname uid euid connection ruser rhost
-       * Format 2 -> time host sshd[id] pam_event_type_desc
-       */
 
       switch (index) {
         case 0:
@@ -138,81 +143,11 @@ export default {
           entry.host = info;
           break;
         case 2:
-          entry.sshdId = info;
+          entry.id = info;
           break;
         case 3:
-          entry.category = info;
+          setCategoryData(entry, info, leftover);
           break;
-        case 4:
-          entry.description = info;
-
-          this.fillUid(entry);
-
-          break;
-        case 5:
-          entry.logname = info;
-          break;
-        case 6:
-          // Probably not needed.
-          //entry.uid = info;
-
-          break;
-        case 7:
-          entry.euid = info;
-          break;
-        case 8:
-          entry.connection = info;
-          break;
-        case 9:
-          entry.ruser = info;
-          break;
-        case 10:
-          let term = "rhost=";
-          let i = info.indexOf(term);
-          entry.rhost = info.substring(i + term.length).trimRight();
-          break;
-      }
-    },
-    fillUid: function(entry) {
-      if (entry.category == "pam_unix(sshd:session)") {
-        let desc_uid_token = "user ";
-        let desc_end_token = " by (uid=0)";
-        let lookForUid = entry.description.indexOf(desc_uid_token);
-        if (lookForUid >= 0) {
-          entry.uid = entry.description.substring(
-            lookForUid + desc_uid_token.length,
-            entry.description.length -
-              (entry.description.indexOf(desc_end_token) >= 0
-                ? desc_end_token.length
-                : 0)
-          );
-        }
-      } else if (entry.category == "pam_syno_log_fail(sshd:auth)") {
-        let desc_uid_token = "uid (";
-        let desc_end_token = ").";
-        let lookForUid = entry.description.indexOf(desc_uid_token);
-        if (lookForUid >= 0) {
-          entry.uid = entry.description.substring(
-            lookForUid + desc_uid_token.length,
-            entry.description.length -
-              (entry.description.indexOf(desc_end_token) >= 0
-                ? desc_end_token.length
-                : 0)
-          );
-        }
-      } else if (entry.category == "pam_syno_log_fail(ftpd:auth)") {
-        let desc_uid_token = "uid (";
-        let desc_end_token = ").";
-        let lookForUid = entry.description.indexOf(desc_uid_token);
-        if (lookForUid >= 0) {
-          entry.uid = entry.description.substring(
-            lookForUid + desc_uid_token.length,
-            entry.description.length -
-              (entry.description.indexOf(desc_end_token) >= 0
-                ? desc_end_token.length
-                : 0)
-          );
-        }
       }
     }
   }

@@ -1,15 +1,14 @@
-export class Entry {
+export default class Entry {
   constructor() {
-    this.time = "", // String
-    this.host = "", // String
-    this.sshdId = "", // String
-    this.category = "", // String
-    this.description = "", // String
-    this.logname = "", // String
-    this.uid = "", // String
-    this.euid = "", // String
-    this.connection = "", // String
-    this.ruser = "", // String
-    this.rhost = "" // String
+    this.time = null, // String
+    this.host = null, // String
+    this.id = null, // String
+    this.category = null, // String
+    this.logname = null, // String
+    this.uid = null, // String
+    this.euid = null, // String
+    this.connection = null, // String
+    this.ruser = null, // String
+    this.rhost = null // String
   }
 }
