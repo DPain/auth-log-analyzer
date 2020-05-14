@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import Entry from "@/objects/entry";
-import setCategoryData from "@/objects/category";
+import Entry from "@/system/entry";
+import setCategoryData from "@/system/category";
 
 export default {
   name: "Load",
@@ -65,12 +65,6 @@ export default {
 
         // Gathers all the values from the promises and then redirects to display page.
         Promise.all(promises).then(dataList => {
-          // eslint-disable-next-line
-          console.log("dataList");
-          // eslint-disable-next-line
-          console.log(dataList);
-          // eslint-disable-next-line
-          console.log(dataList.length);
           this.$router.replace({
             name: "display",
             params: { stats: dataList }

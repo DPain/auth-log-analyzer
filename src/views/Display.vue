@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { analyzeUserRank, analyzeIPRank } from "@/system/analysis";
+
 export default {
   name: "Display",
   props: {
@@ -35,10 +37,29 @@ export default {
 
   methods: {
     analyze: function(stats) {
-      //alert("Analyzing Stats now!");
+      // Merge stats
+      let total = {
+        numIgnore: 0,
+        entries: new Array()
+      };
+
+      stats.forEach(element => {
+        total.numIgnore += element.numIgnore;
+        total.entries = total.entries.concat(element.entries);
+      });
 
       // eslint-disable-next-line
-      console.log(stats);
+      console.log("total");
+      // eslint-disable-next-line
+      console.log(total);
+
+      let userRank = analyzeUserRank(total.entries);
+      // eslint-disable-next-line
+      console.log(userRank);
+
+      let ipRank = analyzeIPRank(total.entries);
+      // eslint-disable-next-line
+      console.log(ipRank);
     }
   }
 };

@@ -2,22 +2,54 @@ const parseCategory = (entry, category, info) => {
   let result = true;
   switch (category) {
     case "pam_unix(sshd:auth):": {
-      try {
-        entry.description = info.substring(0, info.indexOf("; "));
-        entry.rhost = info.substring(info.indexOf("rhost=") + "rhost=".length, info.length);
-      } catch (err) {
-        result = false;
+      if (info.startsWith("bad username [")) {
+        // Test bad username.
+
+        entry.user = info.substring("bad username [".length, info.length - 1);
+      } else {
+        // Normal case
+
+        try {
+          entry.description = info.substring(0, info.indexOf("; "));
+
+          let possibly_rhost_user = info.substring(info.indexOf("rhost=") + "rhost=".length);
+          let lookForUser = possibly_rhost_user.indexOf("user=");
+
+          if (lookForUser >= 0) {
+            entry.rhost = possibly_rhost_user.substring(0, lookForUser).trim(); // Remove whitespaces.
+            entry.user = possibly_rhost_user.substring(lookForUser + "user=".length);
+          } else {
+            entry.rhost = possibly_rhost_user;
+          }
+        } catch (err) {
+          result = false;
+        }
       }
       break;
     }
     case "pam_unix(ftpd:auth):": {
-      try {
-        entry.description = info.substring(0, info.indexOf("; "));
-        // work on this
-        entry.rhost = info.substring(info.indexOf("rhost=") + "rhost=".length, info.length);
-        entry.rhost = info.substring(info.indexOf("user=") + "user=".length, info.length);
-      } catch (err) {
-        result = false;
+      if (info.startsWith("bad username [")) {
+        // Test bad username.
+
+        entry.user = info.substring("bad username [".length, info.length - 1);
+      } else {
+        // Normal case
+
+        try {
+          entry.description = info.substring(0, info.indexOf("; "));
+
+          let possibly_rhost_user = info.substring(info.indexOf("rhost=") + "rhost=".length);
+          let lookForUser = possibly_rhost_user.indexOf("user=");
+
+          if (lookForUser >= 0) {
+            entry.rhost = possibly_rhost_user.substring(0, lookForUser).trim(); // Remove whitespaces.
+            entry.user = possibly_rhost_user.substring(lookForUser + "user=".length);
+          } else {
+            entry.rhost = possibly_rhost_user;
+          }
+        } catch (err) {
+          result = false;
+        }
       }
       break;
     }
