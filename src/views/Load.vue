@@ -88,15 +88,18 @@ export default {
         lines.pop();
       }
 
-      let delimiters = [" ", " ", ": ", ": "];
+      let delimiters = [" ", " ", ": ", " "];
       // eslint-disable-next-line
       console.log("Parsing!");
 
       for (let i = 0; i < lines.length; i++) {
+        let result = true;
+
         let line = lines[i];
 
         if (line == "\n") {
           // Checks if line is an empty line.
+          numIgnore++;
           continue;
         } else {
           // Line is not empty.
@@ -110,19 +113,25 @@ export default {
               // Separator found.
               let info = line.substring(0, index);
               let leftover = line.substring(index);
-              this.fillEntry(entry, info, leftover, j);
+              result = this.fillEntry(entry, info, leftover, j);
+
+              if (!result) {
+                numIgnore++;
+                break;
+              }
 
               line = line.substring(index + delimiters[j].length); // Skip the delimiter itself.
             } else {
               // Separator not found. Unknown format.
-
               numIgnore++;
               break;
             }
           }
 
-          // Register entry.
-          entries.push(entry);
+          if (result) {
+            // Register entry.
+            entries.push(entry);
+          }
         }
       }
 
@@ -134,6 +143,7 @@ export default {
     },
     fillEntry: function(entry, info, leftover, index) {
       // Works because Javascript passes objects by reference.
+      let result = true;
 
       switch (index) {
         case 0:
@@ -146,9 +156,11 @@ export default {
           entry.id = info;
           break;
         case 3:
-          setCategoryData(entry, info, leftover);
+          result = setCategoryData(entry, info, leftover);
           break;
       }
+
+      return result;
     }
   }
 };
