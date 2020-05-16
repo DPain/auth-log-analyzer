@@ -4,18 +4,38 @@
       <div v-if="stats">
         <h1>Stats:</h1>
         <p>{{ stats.length }}</p>
+        <!-- Each card takes in a full row. -->
+        <v-row>
+          <v-col cols="4">
+            <TimeSeriesChart title="Attack Trend1" subtitle="test"></TimeSeriesChart>
+          </v-col>
+          <v-col cols="4">
+            <TimeSeriesChart title="Attack Trend2" subtitle="test"></TimeSeriesChart>
+          </v-col>
+          <v-col cols="4">
+            <TimeSeriesChart title="Attack Trend3" subtitle="test"></TimeSeriesChart>
+          </v-col>
+        </v-row>
       </div>
     </v-container>
   </div>
 </template>
 
 <script>
-import { analyzeUserRank, analyzeIPRank } from "@/system/analysis";
+import {
+  analyzeUserRank,
+  analyzeIPRank
+  //analyzeTimeSeries
+} from "@/system/analysis";
+import TimeSeriesChart from "@/components/TimeSeriesChart";
 
 export default {
   name: "Display",
   props: {
     stats: Array
+  },
+  components: {
+    TimeSeriesChart
   },
 
   computed: {
@@ -60,6 +80,10 @@ export default {
       let ipRank = analyzeIPRank(total.entries);
       // eslint-disable-next-line
       console.log(ipRank);
+
+      //let timeSeries = analyzeTimeSeries(total.entries);
+      // eslint-disable-next-line
+      //console.log(timeSeries);
     }
   }
 };

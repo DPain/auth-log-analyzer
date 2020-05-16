@@ -38,7 +38,24 @@ const analyzeIPRank = (entries) => {
   return sortByValue(result);
 }
 
+const analyzeTimeSeries = (entries) => {
+  let result = new Array();
+
+  entries.forEach(element => {
+    if (element.time != null) {
+      if (typeof element.time === 'string' || element.time instanceof String) {
+        increment(result, element.time);
+      } else {
+        throw new TypeError();
+      }
+    }
+  });
+
+  return result;
+}
+
 export {
   analyzeUserRank,
-  analyzeIPRank
+  analyzeIPRank,
+  analyzeTimeSeries
 };
