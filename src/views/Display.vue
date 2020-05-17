@@ -3,17 +3,32 @@
     <v-container>
       <div v-if="stats">
         <h1>Stats:</h1>
-        <p>{{ stats.length }}</p>
         <!-- Each card takes in a full row. -->
         <v-row>
           <v-col cols="4">
-            <TimeSeriesChart title="Attack Trend1" subtitle="test"></TimeSeriesChart>
+            <TimeSeriesCard
+              title="Logs over Time"
+              subtitle="An entry of log isn't always an attack."
+              label="Logs"
+              :dataX="graphX"
+              :dataY="graphY"
+            ></TimeSeriesCard>
           </v-col>
           <v-col cols="4">
-            <TimeSeriesChart title="Attack Trend2" subtitle="test"></TimeSeriesChart>
+            <TableCard
+              title="Username Ranking"
+              subtitle="The top username rank."
+              :headers="userRankHeaders"
+              :data="userRank"
+            ></TableCard>
           </v-col>
           <v-col cols="4">
-            <TimeSeriesChart title="Attack Trend3" subtitle="test"></TimeSeriesChart>
+            <TableCard
+              title="IP Ranking"
+              subtitle="The top IP rank."
+              :headers="ipHeaders"
+              :data="ipRank"
+            ></TableCard>
           </v-col>
         </v-row>
       </div>
@@ -24,10 +39,11 @@
 <script>
 import {
   analyzeUserRank,
-  analyzeIPRank
-  //analyzeTimeSeries
+  analyzeIPRank,
+  analyzeTimeSeries
 } from "@/system/analysis";
-import TimeSeriesChart from "@/components/TimeSeriesChart";
+import TimeSeriesCard from "@/components/TimeSeriesCard";
+import TableCard from "@/components/TableCard";
 
 export default {
   name: "Display",
@@ -35,7 +51,44 @@ export default {
     stats: Array
   },
   components: {
-    TimeSeriesChart
+    TimeSeriesCard,
+    TableCard
+  },
+  data() {
+    return {
+      graphX: [],
+      graphY: [],
+      userRankHeaders: [
+        {
+          text: "Username",
+          align: "start",
+          sortable: false,
+          value: "user"
+        },
+        {
+          text: "Count",
+          align: "start",
+          sortable: true,
+          value: "count"
+        }
+      ],
+      userRank: [],
+      ipHeaders: [
+        {
+          text: "IP Address",
+          align: "start",
+          sortable: false,
+          value: "ip"
+        },
+        {
+          text: "Count",
+          align: "start",
+          sortable: true,
+          value: "count"
+        }
+      ],
+      ipRank: []
+    };
   },
 
   computed: {
@@ -68,22 +121,27 @@ export default {
         total.entries = total.entries.concat(element.entries);
       });
 
-      // eslint-disable-next-line
-      console.log("total");
-      // eslint-disable-next-line
-      console.log(total);
+      let myMap = analyzeUserRank(total.entries);
 
-      let userRank = analyzeUserRank(total.entries);
-      // eslint-disable-next-line
-      console.log(userRank);
+      for (let [key, value] of myMap) {
+        this.userRank.push({
+          user: key,
+          count: value
+        })
+      }
 
-      let ipRank = analyzeIPRank(total.entries);
-      // eslint-disable-next-line
-      console.log(ipRank);
+      myMap = analyzeIPRank(total.entries);
 
-      //let timeSeries = analyzeTimeSeries(total.entries);
-      // eslint-disable-next-line
-      //console.log(timeSeries);
+      for (let [key, value] of myMap) {
+        this.ipRank.push({
+          ip: key,
+          count: value
+        })
+      }
+
+      let myTimeSeries = analyzeTimeSeries(total.entries);
+      this.graphX = Object.keys(myTimeSeries);
+      this.graphY = Object.values(myTimeSeries);
     }
   }
 };

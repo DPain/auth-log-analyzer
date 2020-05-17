@@ -39,12 +39,14 @@ const analyzeIPRank = (entries) => {
 }
 
 const analyzeTimeSeries = (entries) => {
-  let result = new Array();
+  let result = {};
 
   entries.forEach(element => {
     if (element.time != null) {
       if (typeof element.time === 'string' || element.time instanceof String) {
-        increment(result, element.time);
+        let date = new Date(element.time).toLocaleDateString("en-US");
+
+        result[date] = (result[date] + 1) || 1 ;
       } else {
         throw new TypeError();
       }
