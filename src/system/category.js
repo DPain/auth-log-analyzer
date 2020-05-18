@@ -128,6 +128,31 @@ const parseCategory = (entry, category, info) => {
       result = false;
       break;
     }
+    case "user_get.c:92": {
+      // WIP
+      result = false;
+      break;
+    }
+    case "user_get_real_name.c:48": {
+      // WIP
+      result = false;
+      break;
+    }
+    case "pam_unix(su:session):": {
+      // WIP
+      result = false;
+      break;
+    }
+    case "autoblock_db_release_expired.c:37": {
+      // WIP
+      result = false;
+      break;
+    }
+    case "autoblock_fail_login_set.c:164": {
+      // WIP
+      result = false;
+      break;
+    }
     default: {
       // Matches no category. Unknown category.
       result = false;
