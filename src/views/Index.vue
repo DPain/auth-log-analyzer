@@ -40,9 +40,10 @@ export default {
         title: "What can I learn?",
         body:
           "The things you can learn from your <b>auth.log</b> file are the following:<br>" +
-          "<ul><li>Attacks per city/country.</li>" +
+          "<ul><li>Attacks per IP.</li>" +
           "<li>Top Usernames used.</li>" +
-          "<li>Attack frequency over time.</li></ul>",
+          "<li>Attack frequency over time.</li>" +
+          "<li>Attacks per city/country. (WIP)</li></ul>",
         color: "#1F7087"
       }
     ],
