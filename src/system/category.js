@@ -143,16 +143,6 @@ const parseCategory = (entry, category, info) => {
       result = false;
       break;
     }
-    case "autoblock_db_release_expired.c:37": {
-      // WIP
-      result = false;
-      break;
-    }
-    case "autoblock_fail_login_set.c:164": {
-      // WIP
-      result = false;
-      break;
-    }
     default: {
       // Matches no category. Unknown category.
       result = false;
